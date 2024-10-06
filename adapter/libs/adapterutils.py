@@ -279,7 +279,7 @@ def run_tip_adapter_ensemble(cfg, cache_keys_resnet, cache_values_resnet,
                                                            cache_values_vit,
                                                            val_features_vit,
                                                            val_labels,
-                                                           clip_weights
+                                                           clip_weights,
                                                            adapter=None)
 
     print("\n-------- Evaluating on the test set. --------")
