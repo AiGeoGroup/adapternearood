@@ -13,7 +13,7 @@ import torchvision.transforms as transforms
 # from adapter.dpmf.clip import clip
 import clip
 
-from adapter.libs.relatedwork import *
+from adapter.libs.intraproxy import *
 from adapter.libs.datautils import *
 
 if torch.cuda.is_available():
