@@ -237,16 +237,15 @@ def run_tip_adapter_ensemble(cfg, cache_keys_resnet, cache_values_resnet,
                              cache_keys_vit, cache_values_vit,
                              val_features_resnet, val_features_vit, val_labels,
                              test_features_resnet, test_features_vit,
-                             test_labels, clip_weights_resnet,
-                             clip_weights_vit):
+                             test_labels, clip_weights):
 
     print("\n-------- Searching hyperparameters on the val set. --------")
     # Tip-Adapter parameters
     beta, alpha, gamma = cfg['init_beta'], cfg['init_alpha'], cfg['init_gamma']
 
     # Zero-shot CLIP (ResNet and ViT)
-    clip_logits_resnet = val_features_resnet @ clip_weights_resnet
-    clip_logits_vit = val_features_vit @ clip_weights_vit
+    clip_logits_resnet = val_features_resnet @ clip_weights
+    clip_logits_vit = val_features_vit @ clip_weights
 
     # Combine ResNet and ViT logits
     clip_logits = gamma * clip_logits_resnet + clip_logits_vit
@@ -280,15 +279,14 @@ def run_tip_adapter_ensemble(cfg, cache_keys_resnet, cache_values_resnet,
                                                            cache_values_vit,
                                                            val_features_vit,
                                                            val_labels,
-                                                           clip_weights_resnet,
-                                                           clip_weights_vit,
+                                                           clip_weights
                                                            adapter=None)
 
     print("\n-------- Evaluating on the test set. --------")
 
     # Zero-shot CLIP on test set
-    clip_logits_resnet = test_features_resnet @ clip_weights_resnet
-    clip_logits_vit = test_features_vit @ clip_weights_vit
+    clip_logits_resnet = test_features_resnet @ clip_weights
+    clip_logits_vit = test_features_vit @ clip_weights
     clip_logits = best_gamma * clip_logits_resnet + clip_logits_vit
 
     acc = cls_acc(clip_logits, test_labels)
@@ -468,8 +466,7 @@ def search_hp_ensemble(cfg,
                        cache_values_vit,
                        val_features_vit,
                        val_labels,
-                       clip_weights_resnet,
-                       clip_weights_vit,
+                       clip_weights,
                        adapter=None):
     if cfg['search_hp'] == True:
         beta_list = [
@@ -509,7 +506,7 @@ def search_hp_ensemble(cfg,
                     # Combine ResNet and ViT cache logits
                     cache_logits = gamma * cache_logits_resnet + cache_logits_vit  # gamma
                     # cache_logits = ((-1) * (beta - beta * affinity)).exp() @ cache_values
-                    vit_clip_logits = 100. * val_features_vit @ clip_weights_vit
+                    vit_clip_logits = 100. * val_features_vit @ clip_weights
                     tip_logits = vit_clip_logits + cache_logits * alpha
                     acc = cls_acc(tip_logits, val_labels)
 
@@ -625,9 +622,8 @@ def run_intra_proxy_tip_adapter_ensemble(cfg,
                                          test_features_resnet,
                                          test_features_vit,
                                          test_labels,
-                                         clip_weights_resnet,
-                                         clip_weights_vit,
-                                         vit_cupl_clip_weights,
+                                         clip_weights,
+                                         cupl_clip_weights,
                                          plabel):  # training-free
 
     # Tip-Adapter
@@ -636,8 +632,8 @@ def run_intra_proxy_tip_adapter_ensemble(cfg,
     with torch.no_grad():
         #zero-shot clip
         #clip_logits = val_features @ clip_weights # 100. * val_features @ clip_weights
-        clip_logits_resnet = val_features_resnet @ clip_weights_resnet
-        clip_logits_vit = val_features_vit @ clip_weights_vit
+        clip_logits_resnet = val_features_resnet @ clip_weights
+        clip_logits_vit = val_features_vit @ clip_weights
 
         acc = cls_acc(clip_logits_resnet, test_labels)  # RESNET
         print("**** RESNET Zero-shot CLIP's val accuracy: {:.2f}. ****".format(
@@ -687,7 +683,7 @@ def run_intra_proxy_tip_adapter_ensemble(cfg,
 
         print("-------- Evaluating on the test set. --------")
         # Zero-shot CUPL CLIP
-        zeroshot_weights_both = 0.45 * clip_weights_vit + 0.55 * vit_cupl_clip_weights
+        zeroshot_weights_both = 0.45 * clip_weights + 0.55 * cupl_clip_weights
         cupl_clip_logits = test_features_vit @ zeroshot_weights_both  # 100. * test_features @ clip_weights
         acc = cls_acc(cupl_clip_logits, test_labels)
         acc_top_3 = cls_acc(cupl_clip_logits, test_labels, topk=3)
@@ -723,8 +719,7 @@ def run_intra_proxy_tip_adapter_ensemble(cfg,
             cache_values_vit,
             val_features_vit,
             val_labels,
-            clip_weights_resnet,
-            clip_weights_vit,
+            clip_weights,
             adapter=None)
         print(best_beta, best_alpha, best_gamma)
 
