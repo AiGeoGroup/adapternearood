@@ -64,7 +64,7 @@ def sinkhorn(M, tau_t=0.01, gamma=0, iter=20):
 def run_intra_model_proxy_learning_clip(configs, logits_base, cupl_clip_weights, val_features, val_labels):
     print('obtain refined labels by Sinkhorn distance')
     logits_t = logits_base
-    plabel = sinkhorn(logits_t, configs['tau_t'], configs['gamma'], configs['iters_sinkhorn'])
+    plabel = sinkhorn(logits_t, configs['taut'], configs['gamma'], configs['iters_sinkhorn'])
 
     print('obtain vision proxy with Sinkhorn distance')
     # text_classifier = clip_weights_template
