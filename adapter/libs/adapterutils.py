@@ -10,7 +10,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torchvision.transforms as transforms
 
-import clip
+from adapter.dpmf.clip import clip
 
 from adapter.libs.relatedwork import *
 from adapter.libs.datautils import *
