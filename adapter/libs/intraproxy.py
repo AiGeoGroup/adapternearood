@@ -71,7 +71,7 @@ def run_intra_model_proxy_learning_clip(configs, logits_base, cupl_clip_weights,
     text_classifier = cupl_clip_weights
     # text_classifier = zeroshot_weights_both
     image_feat = val_features
-    image_classifier = image_opt(image_feat, text_classifier, plabel, configs['lr'], configs['iters_proxy'], configs['tau_i'], configs['alpha'])
+    image_classifier = image_opt(image_feat, text_classifier, plabel, configs['lr'], configs['iters_proxy'], configs['taui'], configs['alpha'])
     logits_i = 100.0 * image_feat @ image_classifier
 
     acc_logits_i = cls_acc(logits_i, val_labels)
