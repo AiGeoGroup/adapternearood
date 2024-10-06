@@ -10,7 +10,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import torchvision.transforms as transforms
 
-# import clip
+import clip
 
 from adapter.libs.relatedwork import *
 from adapter.libs.datautils import *
@@ -86,7 +86,7 @@ def extract_text_features(cfg, classnames, clip_model, template):
                 classname = classname.replace('_', ' ')
 
             template_texts = [t.format(classname) for t in template]
-            texts_token = clip_model.tokenize(template_texts,
+            texts_token = clip.tokenize(template_texts,
                                         truncate=True).to(device)
             # prompt ensemble for Eurosat
             class_embeddings = clip_model.encode_text(texts_token)
@@ -119,7 +119,7 @@ def extract_cupl_text_features(cfg, classnames, prompt_path, clip_model,
             cupl_texts = prompts[classname]
             texts = cupl_texts + template_texts
 
-            texts_token = clip_model.tokenize(texts, truncate=True).to(device)
+            texts_token = clip.tokenize(texts, truncate=True).to(device)
             # prompt ensemble for Eurosat
             class_embeddings = clip_model.encode_text(texts_token)
             class_embeddings /= class_embeddings.norm(dim=-1, keepdim=True)
@@ -149,7 +149,7 @@ def extract_text_features_negative(cfg, classnames, prompt_path, clip_model,
             cupl_texts = prompts[classname]
             texts = template_texts
 
-            texts_token = clip_model.tokenize(texts, truncate=True).to(device)
+            texts_token = clip.tokenize(texts, truncate=True).to(device)
             # prompt ensemble for eurosat
             class_embeddings = clip_model.encode_text(texts_token)
             class_embeddings /= class_embeddings.norm(dim=-1, keepdim=True)
