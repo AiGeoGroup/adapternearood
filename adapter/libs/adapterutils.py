@@ -238,15 +238,15 @@ def run_tip_adapter_ensemble(cfg, cache_keys_resnet, cache_values_resnet,
                              cache_keys_vit, cache_values_vit,
                              val_features_resnet, val_features_vit, val_labels,
                              test_features_resnet, test_features_vit,
-                             test_labels, clip_weights):
+                             test_labels, clip_weights_resnet, clip_weights_vit):
 
     print("\n-------- Searching hyperparameters on the val set. --------")
     # Tip-Adapter parameters
     beta, alpha, gamma = cfg['init_beta'], cfg['init_alpha'], cfg['init_gamma']
 
     # Zero-shot CLIP (ResNet and ViT)
-    clip_logits_resnet = val_features_resnet @ clip_weights
-    clip_logits_vit = val_features_vit @ clip_weights
+    clip_logits_resnet = val_features_resnet @ clip_weights_resnet
+    clip_logits_vit = val_features_vit @ clip_weights_vit
 
     # Combine ResNet and ViT logits
     clip_logits = gamma * clip_logits_resnet + clip_logits_vit
@@ -467,7 +467,8 @@ def search_hp_ensemble(cfg,
                        cache_values_vit,
                        val_features_vit,
                        val_labels,
-                       clip_weights,
+                       clip_weights_resnet, 
+                       clip_weights_vit,
                        adapter=None):
     if cfg['search_hp'] == True:
         beta_list = [
@@ -507,7 +508,7 @@ def search_hp_ensemble(cfg,
                     # Combine ResNet and ViT cache logits
                     cache_logits = gamma * cache_logits_resnet + cache_logits_vit  # gamma
                     # cache_logits = ((-1) * (beta - beta * affinity)).exp() @ cache_values
-                    vit_clip_logits = 100. * val_features_vit @ clip_weights
+                    vit_clip_logits = 100. * val_features_vit @ clip_weights_vit
                     tip_logits = vit_clip_logits + cache_logits * alpha
                     acc = cls_acc(tip_logits, val_labels)
 
