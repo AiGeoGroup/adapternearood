@@ -92,8 +92,6 @@ def extract_OOD_features(configs,
     test_ood_labels = oodtestset.classes
     print(test_ood_labels)
 
-
-
     ood_val_features, ood_val_labels = extract_features_from_loader(
         configs, "val", clipmodel, oodtestloader)  # "val" is split
     ood_test_features, ood_test_labels = extract_features_from_loader(
