@@ -157,7 +157,7 @@ def extract_OOD_features(
         preprocess=None,
         clipmodel=None):
     ood_class_names, oodtestset, oodtestloader = get_ood_data_loader(
-        nw_src_dir, ood_dst_dir, ood_number, sat_name)
+        nw_src_dir, ood_data_path, ood_number, sat_name)
 
     test_ood_labels = oodtestset.classes
     # print(test_ood_labels)
