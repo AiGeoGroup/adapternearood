@@ -316,7 +316,7 @@ def run_tip_adapter_ensemble(cfg, cache_keys_resnet, cache_values_resnet,
     print(f"**** Rensnet Tip-Adapter's test accuracy: {acc:.2f}. ****\n")
 
 
-def run_tip_adapter(cfg, cache_keys, cache_values, val_features, val_labels,
+def run_tip_adapter_(cfg, cache_keys, cache_values, val_features, val_labels,
                     test_features, test_labels, clip_weights):  # training-free
     print("\n-------- Searching hyperparameters on the val set. --------")
 
