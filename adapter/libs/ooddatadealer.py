@@ -66,6 +66,7 @@ def create_sallited_subset(_src_dir, _dst_dir, ood_class_names):
 
 # 获取ood数据集与loader
 def get_ood_data_loader(
+        configs,
         nw_src_dir='/kaggle/input/rgbeurosat/RBG/',  # path to source data
         ood_dst_dir='/kaggle/working/OpenoodData/eurosatOOD/',  # path to out-of-distribution data set
         ood_number=5,
@@ -101,6 +102,7 @@ def get_ood_data_loader(
 
 # 获取id数据集与loader
 def get_id_data_loader(
+        configs,
         nw_src_dir='/kaggle/input/rgbeurosat/RBG/',  # path to source data
         id_dst_dir='/kaggle/working/OpenoodData/eurosatID/',  # path to in-distribution data set
         ood_number=5,
