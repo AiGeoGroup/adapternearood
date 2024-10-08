@@ -30,8 +30,8 @@ def get_folder_dataset(train_src_dir='/kaggle/input/nwpuresisc45/Dataset/train/t
     print("Total number of classes: {}".format(len(class_names)))
     print(dataset.class_to_idx)
 
-    print(class_names[:ood_number])
-    print(class_names[ood_number:2*ood_number])
+    # print(class_names[:ood_number])
+    # print(class_names[ood_number:2*ood_number])
     return dataset
 
 # 创建nwpuresisc OOD检测数据集,将原始数据拷贝到id_dst_dir
@@ -72,7 +72,7 @@ def get_ood_data_loader(
         ood_dst_dir='/kaggle/working/OpenoodData/eurosatOOD/',  # path to out-of-distribution data set
         ood_number=5,
         sat_name='NWPU-RESISC45'):
-
+    
     test_src_dir = os.path.join(nw_src_dir, 'test')
     mydataset = get_folder_dataset(test_src_dir, ood_number)
     ood_class_names = mydataset.classes[ood_number:2 * ood_number]
@@ -102,7 +102,7 @@ def get_id_data_loader(
         id_dst_dir='/kaggle/working/OpenoodData/eurosatID/',  # path to in-distribution data set
         ood_number=5,
         sat_name='NWPU-RESISC45'):
-
+    
     test_src_dir = os.path.join(nw_src_dir, 'test')
     mydataset = get_folder_dataset(test_src_dir, ood_number)
     id_class_names = mydataset.classes[:ood_number]
@@ -135,6 +135,8 @@ def extract_ID_features(
         sat_name='NWPU-RESISC45',
         preprocess=None,
         clipmodel=None):
+            
+    ood_number=int(ood_number)
     id_class_names, idtestset, idtestloader = get_id_data_loader(
         nw_src_dir, id_data_path, ood_number, sat_name)
 
@@ -156,6 +158,7 @@ def extract_OOD_features(
         sat_name='NWPU-RESISC45',
         preprocess=None,
         clipmodel=None):
+    ood_number=int(ood_number)
     ood_class_names, oodtestset, oodtestloader = get_ood_data_loader(
         nw_src_dir, ood_data_path, ood_number, sat_name)
 
