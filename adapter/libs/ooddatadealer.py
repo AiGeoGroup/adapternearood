@@ -1,21 +1,19 @@
 import os
-import sys
 import shutil
-from tqdm import tqdm
+import sys
 
 import numpy as np
-
-from torchvision import datasets, transforms
-from torchvision.utils import save_image
-import torchvision
+import seaborn as sns
 import torch
 import torch.nn.functional as F
-
-import seaborn as sns
+import torchvision
 from matplotlib import pyplot as plt
+from torchvision import datasets, transforms
+from torchvision.utils import save_image
+from tqdm import tqdm
 
-from adapter.libs.datautils import *
 from adapter.libs.adapterutils import *
+from adapter.libs.datautils import *
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 kwargs = {'num_workers': 4, 'pin_memory': True}
@@ -74,7 +72,11 @@ def get_ood_data_loader(
         sat_name='NWPU-RESISC45', 
         preprocess=None):
     
-    test_src_dir = os.path.join(nw_src_dir, 'test')
+    if sat_name == 'NWPU-RESISC45':
+        test_src_dir = os.path.join(nw_src_dir, 'test/test')
+    else:
+        test_src_dir = os.path.join(nw_src_dir, 'test')
+    
     mydataset = get_folder_dataset(test_src_dir, ood_number)
     ood_class_names = mydataset.classes[ood_number:2 * ood_number]
 
@@ -105,7 +107,11 @@ def get_id_data_loader(
         sat_name='NWPU-RESISC45', 
         preprocess=None):
     
-    test_src_dir = os.path.join(nw_src_dir, 'test')
+    if sat_name == 'NWPU-RESISC45':
+        test_src_dir = os.path.join(nw_src_dir, 'test/test')
+    else:
+        test_src_dir = os.path.join(nw_src_dir, 'test')
+        
     mydataset = get_folder_dataset(test_src_dir, ood_number)
     id_class_names = mydataset.classes[:ood_number]
 
