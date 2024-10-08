@@ -148,7 +148,7 @@ def extract_ID_features(
             
     ood_number=int(ood_number)
     id_class_names, idtestset, idtestloader = get_id_data_loader(
-        nw_src_dir, id_data_path, ood_number, sat_name, preprocess)
+        configs, nw_src_dir, id_data_path, ood_number, sat_name, preprocess)
 
     test_id_labels = idtestset.classes
     # print(test_id_labels)
@@ -170,7 +170,7 @@ def extract_OOD_features(
         clipmodel=None):
     ood_number=int(ood_number)
     ood_class_names, oodtestset, oodtestloader = get_ood_data_loader(
-        nw_src_dir, ood_data_path, ood_number, sat_name, preprocess)
+        configs, nw_src_dir, ood_data_path, ood_number, sat_name, preprocess)
 
     test_ood_labels = oodtestset.classes
     # print(test_ood_labels)
