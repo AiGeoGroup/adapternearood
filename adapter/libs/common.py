@@ -1,6 +1,7 @@
 import torch
 import random
 import numpy as np
+import logging
 
 # common.py
 def get_num_cls(cfgs):
@@ -28,3 +29,18 @@ def softmax(x):
     # 计算每个样本的Softmax概率
     probabilities = exp_values / np.sum(exp_values)
     return probabilities
+
+
+
+def setup_log(log_directory):
+    log = logging.getLogger(__name__)
+    formatter = logging.Formatter('%(asctime)s : %(message)s')
+    fileHandler = logging.FileHandler(os.path.join(log_directory, "ood_eval_info.log"), mode='w')
+    fileHandler.setFormatter(formatter)
+    streamHandler = logging.StreamHandler()
+    streamHandler.setFormatter(formatter)
+    log.setLevel(logging.DEBUG)
+    log.addHandler(fileHandler)
+    log.addHandler(streamHandler)
+    log.debug(f"#########logging############")
+    return log
