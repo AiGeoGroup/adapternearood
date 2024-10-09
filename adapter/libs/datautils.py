@@ -59,7 +59,7 @@ def get_train_test_val_dataset_eurosat(
     return train_dataset, test_dataset, val_dataset
 
 
-def get_train_test_val_dataset(
+def get_train_test_val_dataset_split(
         data_root='/kaggle/input/nwpu-data-set/NWPU Data Set/NWPU-RESISC45/NWPU-RESISC45/',
         preprocess=None,
         tain_size=0.8,
@@ -71,6 +71,37 @@ def get_train_test_val_dataset(
         full_dataset, [tain_size, test_size, val_size])
     return full_dataset, train_dataset, val_dataset, test_dataset
 
+
+def get_train_test_val_dataset_AID(
+        data_root='/kaggle/working/aid-scene-classification-datasets/AID/', preprocess=None):
+    path_to_train_data = data_root + 'train/'
+    train_dataset = torchvision.datasets.ImageFolder(path_to_train_data,
+                                                     transform=preprocess)
+
+    path_to_test_data = data_root + 'test/'
+    test_dataset = torchvision.datasets.ImageFolder(path_to_test_data,
+                                                    transform=preprocess)
+
+    path_to_val_data = data_root + 'val/'
+    val_dataset = torchvision.datasets.ImageFolder(path_to_val_data,
+                                                   transform=preprocess)
+    return train_dataset, test_dataset, val_dataset
+
+
+def get_train_test_val_dataset_siri_whu(
+        data_root='/kaggle/input/siri-whu-train-test-dataset/Dataset/', preprocess=None):
+    path_to_train_data = data_root + 'train/'
+    train_dataset = torchvision.datasets.ImageFolder(path_to_train_data,
+                                                     transform=preprocess)
+
+    path_to_test_data = data_root + 'test/'
+    test_dataset = torchvision.datasets.ImageFolder(path_to_test_data,
+                                                    transform=preprocess)
+
+    path_to_val_data = data_root + 'val/'
+    val_dataset = torchvision.datasets.ImageFolder(path_to_val_data,
+                                                   transform=preprocess)
+    return train_dataset, test_dataset, val_dataset
 
 def get_train_test_val_dataset_resisc(
         data_root='/kaggle/input/nwpuresisc45/Dataset/', preprocess=None):
