@@ -70,7 +70,6 @@ def get_ood_scores_clip(
             _score.append(-smax)
 
         # _score.append(-np.max(smax, axis=1))  # MCM
-
     return concat(_score)[:len(loader.dataset)].copy()
 
 
@@ -153,6 +152,67 @@ def get_ood_scores_clip_EOE(
             _score.append(-to_np(torch.max(smax, 1)[0]))
 
     return concat(_score)[:len(loader.dataset)].copy()
+
+
+
+def get_mean_prec(clipmodel, train_loader, feat_dim=512, n_classes=45, normalize=True, device='cuda'): # feat=512 ViT or feat=1024 Resnet
+    '''
+    used for Mahalanobis score. Calculate class-wise mean and inverse covariance matrix
+    '''
+    classwise_mean = torch.empty(n_classes, feat_dim).to(device)
+    all_features = []
+    # classwise_features = []
+    from collections import defaultdict
+    classwise_idx = defaultdict(list)
+    with torch.no_grad():
+        for idx, (images, labels) in enumerate(tqdm(train_loader)):
+            images = images.cuda()
+            features = clipmodel.encode_image(images).float()
+            features /= features.norm(dim=-1, keepdim=True)
+            
+            for label in labels:
+                classwise_idx[label.item()].append(idx)
+            all_features.append(features.cpu()) #for vit
+            
+    all_features = torch.cat(all_features)
+    for cls in range(n_classes):
+        classwise_mean[cls] = torch.mean(all_features[classwise_idx[cls]].float(), dim = 0)
+        if normalize: 
+            classwise_mean[cls] /= classwise_mean[cls].norm(dim=-1, keepdim=True)
+    cov = torch.cov(all_features.T.double()) 
+    precision = torch.linalg.inv(cov).float()
+    print(f'cond number: {torch.linalg.cond(precision)}')
+    return classwise_mean, precision
+
+
+def get_Mahalanobis_score(configs, clipmodel, test_loader, classwise_mean, precision, in_dist = True, n_classes=45):
+    '''
+    Compute the proposed Mahalanobis confidence score on input dataset
+    '''
+    # net.eval()
+    Mahalanobis_score_all = []
+    total_len = len(test_loader.dataset)
+    tqdm_object = tqdm(test_loader, total=len(test_loader))
+    with torch.no_grad():
+        for batch_idx, (images, labels) in enumerate(tqdm_object):
+            if (batch_idx >= total_len // configs['batch_size']) and in_dist is False:
+                break   
+            images, labels = images.cuda(), labels.cuda()
+            features = clipmodel.encode_image(images).float()
+            features /= features.norm(dim=-1, keepdim=True)
+        
+            for i in range(n_classes):
+                class_mean = classwise_mean[i]
+                zero_f = features - class_mean
+                Mahalanobis_dist = -0.5*torch.mm(torch.mm(zero_f.to(device), precision.to(device)), zero_f.t()).diag()
+                if i == 0:
+                    Mahalanobis_score = Mahalanobis_dist.view(-1,1)
+                else:
+                    Mahalanobis_score = torch.cat((Mahalanobis_score, Mahalanobis_dist.view(-1,1)), 1)      
+            Mahalanobis_score, _ = torch.max(Mahalanobis_score, dim=1)
+            Mahalanobis_score_all.extend(-Mahalanobis_score.cpu().numpy())
+        
+    return np.asarray(Mahalanobis_score_all, dtype=np.float32)
 
 
 def print_measures(log,
