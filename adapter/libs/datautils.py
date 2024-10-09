@@ -482,7 +482,7 @@ def get_num_classes_from_dsname(dataset_name):
     elif (dataset_name == 'cifar100'):
         return 100
 
-    elif (dataset_name == 'eurosat'):
+    elif (dataset_name == 'Eurosat'):
         return 10
 
     elif (dataset_name == 'NWPU-RESISC45'):
