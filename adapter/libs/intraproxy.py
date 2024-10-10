@@ -62,7 +62,7 @@ def sinkhorn(M, tau_t=0.01, gamma=0, iter=20):
 
 ### Intra-Modal Proxy Learning CLIP
 def run_intra_model_proxy_learning_clip(configs, logits_base, cupl_clip_weights, val_features, val_labels):
-    print('obtain refined labels by Sinkhorn distance')
+    # print('obtain refined labels by Sinkhorn distance')
     logits_t = logits_base
     plabel = sinkhorn(logits_t, configs['taut'], configs['gamma'], configs['iters_sinkhorn'])
 
@@ -76,8 +76,8 @@ def run_intra_model_proxy_learning_clip(configs, logits_base, cupl_clip_weights,
 
     acc_logits_i = cls_acc(logits_i, val_labels)
     acc_logits_i_3 = cls_acc(logits_i, val_labels, topk=3)
-    print(acc_logits_i)
-    print(acc_logits_i_3)
+    # print(acc_logits_i)
+    # print(acc_logits_i_3)
     return image_classifier, plabel
 
 
