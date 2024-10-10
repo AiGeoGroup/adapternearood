@@ -66,7 +66,7 @@ def run_intra_model_proxy_learning_clip(configs, logits_base, cupl_clip_weights,
     logits_t = logits_base
     plabel = sinkhorn(logits_t, configs['taut'], configs['gamma'], configs['iters_sinkhorn'])
 
-    print('obtain vision proxy with Sinkhorn distance')
+    # print('obtain vision proxy with Sinkhorn distance')
     # text_classifier = clip_weights_template
     text_classifier = cupl_clip_weights
     # text_classifier = zeroshot_weights_both
