@@ -347,6 +347,9 @@ def get_and_print_results(log,
 
 def plot_distribution(log_directory, id_scores, ood_scores, out_dataset):
     sns.set(style="white", palette="muted")
-    palette = ['#A8BAE3', '#55AB83']
-    sns.displot({"ID":-1 * id_scores, "OOD": -1 * ood_scores}, label="id", kind = "kde", palette=palette, fill = True, alpha = 0.8)
+    # palette = ['#A8BAE3', '#55AB83']
+    palette = ['#8E8BFE', '#FEA3A2']
+    sns_plt = sns.displot({"ID":-1 * id_scores, "OOD": -1 * ood_scores}, label="id", kind = "kde", 
+                          palette=palette, fill = True, alpha = 0.8, linewidth=3, legend=False)
+    # sns.displot({"ID":-1 * id_scores, "OOD": -1 * ood_scores}, label="id", kind = "kde", palette=palette, fill = True, alpha = 0.8)
     plt.savefig(os.path.join(log_directory, f"{out_dataset}.png"), bbox_inches='tight')
