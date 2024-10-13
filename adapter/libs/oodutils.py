@@ -342,7 +342,7 @@ def get_and_print_results(log,
     auroc_list.append(auroc)
     aupr_list.append(aupr)
     fpr_list.append(fpr)  # used to calculate the avg over multiple OOD test sets
-    print_measures(log, auroc, aupr, fpr, score_type)
+    # print_measures(log, auroc, aupr, fpr, score_type)
 
 
 def plot_distribution(log_directory, id_scores, ood_scores, out_dataset):
