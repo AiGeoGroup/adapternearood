@@ -58,7 +58,7 @@ def get_ood_scores_clip(
             _score.append(-np.var(smax, axis=1))
         elif score_type in ['MCM', 'max-logit', 'MSP']:
             _score.append(-np.max(smax, axis=1))
-        elif score_type == 'OMCM':
+        elif score_type == 'IDMCM':
             smax = np.max(
                 smax[:, :id_class_nums],
                 axis=1) - nood_beta * np.max(smax[:, id_class_nums:], axis=1)
