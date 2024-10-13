@@ -222,8 +222,7 @@ def print_measures(log,
                    method_name='Ours',
                    recall_level=0.95):
     if log == None:
-        print('FPR{:d}:\t\t\t{:.2f}'.format(int(100 * recall_level),
-                                            100 * fpr))
+        print('FPR{:d}:\t\t\t{:.2f}'.format(int(100 * recall_level), 100 * fpr))
         print('AUROC: \t\t\t{:.2f}'.format(100 * auroc))
         print('AUPR:  \t\t\t{:.2f}'.format(100 * aupr))
     else:
@@ -335,17 +334,14 @@ def get_and_print_results(log,
     aurocs.append(measures[0])
     auprs.append(measures[1])
     fprs.append(measures[2])
-    print(
-        f'in score samples (random sampled): {in_score[:3]}, out score samples: {out_score[:3]}'
-    )
+    # print(f'in score samples (random sampled): {in_score[:3]}, out score samples: {out_score[:3]}')
     # print(f'in score samples (min): {in_score[-3:]}, out score samples: {out_score[-3:]}')
     auroc = np.mean(aurocs)
     aupr = np.mean(auprs)
     fpr = np.mean(fprs)
     auroc_list.append(auroc)
     aupr_list.append(aupr)
-    fpr_list.append(
-        fpr)  # used to calculate the avg over multiple OOD test sets
+    fpr_list.append(fpr)  # used to calculate the avg over multiple OOD test sets
     print_measures(log, auroc, aupr, fpr, score_type)
 
 
