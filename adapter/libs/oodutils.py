@@ -68,7 +68,7 @@ def get_ood_scores_clip(
                 smax[:, id_class_nums:],
                 axis=1) - nood_beta * np.max(smax[:, :id_class_nums], axis=1)
             _score.append(-smax)
-
+        
         # _score.append(-np.max(smax, axis=1))  # MCM
     return concat(_score)[:len(loader.dataset)].copy()
 
