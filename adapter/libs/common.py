@@ -9,7 +9,7 @@ def get_num_cls(cfgs):
         'Eurosat': 10,
         'NWPU-RESISC45': 45,
         'UC-Merced': 21, 
-        'siri-wuhu': 12, 
+        'SIRI-WHU': 12, 
         'AID': 30
     }
     n_cls = NUM_CLS_DICT[cfgs['in_dataset']]
