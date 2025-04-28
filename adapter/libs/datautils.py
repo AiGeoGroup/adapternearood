@@ -522,7 +522,7 @@ def get_num_classes_from_dsname(dataset_name):
     elif (dataset_name == 'UC-Merced'):
         return 21
 
-    elif (dataset_name == 'siri-wuhu'):
+    elif (dataset_name == 'SIRI-WHU'):
         return 12
 
     elif (dataset_name == 'AID-Scene'):
