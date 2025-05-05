@@ -83,7 +83,7 @@ def extract_text_features(cfg, classnames, clip_model, template):
         clip_weights = []
         for i, classname in enumerate(classnames):
             # Tokenize the prompts
-            if cfg['rsdataname'] != 'SIRI-WHU':
+            if cfg['in_dataset'] != 'SIRI-WHU':
                 classname = classname.replace('_', ' ')
 
             template_texts = [t.format(classname) for t in template]
@@ -113,7 +113,7 @@ def extract_cupl_text_features(cfg, classnames, prompt_path, clip_model,
         cupl_clip_weights = []
         for i, classname in enumerate(classnames):
             # Tokenize the prompts
-            if cfg['rsdataname'] != 'SIRI-WHU':
+            if cfg['in_dataset'] != 'SIRI-WHU':
                 classname = classname.replace('_', ' ')
 
             template_texts = [t.format(classname) for t in template]
@@ -144,7 +144,7 @@ def extract_text_features_negative(cfg, classnames, prompt_path, clip_model,
         clip_weights_all = []
         for i, classname in enumerate(classnames):
             # Tokenize the prompts
-            if cfg['rsdataname'] != 'SIRI-WHU':
+            if cfg['in_dataset'] != 'SIRI-WHU':
                 classname = classname.replace('_', ' ')
             template_texts = [t.format(classname) for t in template]
             cupl_texts = prompts[classname]
